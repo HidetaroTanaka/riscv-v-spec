@@ -50,16 +50,14 @@ abandoned.  Section <<sec-vector-extensions>> lists the standard
 vector extensions and which instructions and element widths are
 supported by each extension.
 
-== Implementation-defined Constant Parameters
+== 実装による定義の定数パラメタ
 
-Each hart supporting a vector extension defines two parameters:
+ベクトル拡張をサポートする各hartは次の2パラメタを定義する:
 
-. The maximum size in bits of a vector element that any operation can produce or consume, _ELEN_ {ge} 8, which
-must be a power of 2.
-. The number of bits in a single vector register, _VLEN_ {ge} ELEN, which must be a power of 2, and must be no greater than 2^16^.
+. 任意の演算が生成または使用するベクトル要素の最大長, _ELEN_ {ge} 8．_ELEN_ は2のべき乗でなければならない．
+. 1つのベクトルレジスタの長さ(bit)，_VLEN_ {ge} _ELEN_．_VLEN_ は2^16^を超えてはならない．
 
-Standard vector extensions (Section <<sec-vector-extensions>>) and
-architecture profiles may set further constraints on _ELEN_ and _VLEN_.
+標準ベクトル拡張 (章 <<sec-vector-extensions>>)とアーキテクチャprofileは追加の制約を _ELEN_ と _VLEN_ に与える場合がある．
 
 NOTE: Future extensions may allow ELEN {gt} VLEN by holding one
 element using bits from multiple vector registers, but this current

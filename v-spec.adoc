@@ -70,10 +70,16 @@ register will require new configuration instructions such that
 software using the old configuration instructions does not see greater
 vector lengths.
 
+特定の制約下で書かれたバイナリコードをサポートするベクトル拡張は，必要な要素型と命令をサポートするという前提で異なるVLENパラメタのhartにおいても該当コードを実行する．
+
+（つまり，Zve32x拡張で書かれたバイナリコードをZve64f拡張をサポートするhartで実行する場合，Zve32xが要求する要素長8, 16, 32をZve64fはサポートし，また整数命令もすべてZve64fでサポートされるため実行可能．TODO: 再度翻訳が必要）
+
+////
 The vector extension supports writing binary code that under certain
 constraints will execute portably on harts with different values for
 the VLEN parameter, provided the harts support the required element
 types and instructions.
+////
 
 NOTE: Code can be written that will expose differences in
 implementation parameters.

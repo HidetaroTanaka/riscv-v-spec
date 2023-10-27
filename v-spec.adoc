@@ -88,36 +88,33 @@ NOTE: In general, thread contexts with active vector state cannot be
 migrated during execution between harts that have any difference in
 VLEN or ELEN parameters.
 
-== Vector Extension Programmer's Model
+== プログラマのベクトル拡張モデル
 
-The vector extension adds 32 vector registers, and seven unprivileged
-CSRs (`vstart`, `vxsat`, `vxrm`, `vcsr`, `vtype`, `vl`, `vlenb`) to a
-base scalar RISC-V ISA.
+ベクトル拡張は32のベクトルレジスタと7つの非特権CSR (`vstart`, `vxsat`, `vxrm`, `vcsr`, `vtype`, `vl`, `vlenb`) を基本の整数RISC-V ISAに追加する．
 
-.New vector CSRs
+.新たなベクトルCSR
 [cols="2,2,2,10"]
 [%autowidth]
 |===
-| Address | Privilege | Name   | Description
+| アドレス | 特権 | 名前   | 説明
 
-| 0x008 | URW | vstart | Vector start position
-| 0x009 | URW | vxsat  | Fixed-Point Saturate Flag
-| 0x00A | URW | vxrm   | Fixed-Point Rounding Mode
-| 0x00F | URW | vcsr   | Vector control and status register
-| 0xC20 | URO | vl     | Vector length
-| 0xC21 | URO | vtype  | Vector data type register
-| 0xC22 | URO | vlenb  | VLEN/8 (vector register length in bytes)
+| 0x008 | URW | vstart | ベクトル開始位置
+| 0x009 | URW | vxsat  | 固定小数点飽和フラグ
+| 0x00A | URW | vxrm   | 固定小数点丸めモード
+| 0x00F | URW | vcsr   | ベクトル制御・状態レジスタ
+| 0xC20 | URO | vl     | ベクトルレジスタ長
+| 0xC21 | URO | vtype  | ベクトルデータタイプレジスタ
+| 0xC22 | URO | vlenb  | VLEN/8 (Byte単位のベクトルレジスタ長)
 |===
 
 NOTE: The four CSR numbers `0x00B`-`0x00E` are tentatively reserved
 for future vector CSRs, some of which may be mirrored into `vcsr`.
 
-=== Vector Registers
+=== ベクトルレジスタ
 
-The vector extension adds 32 architectural vector registers,
-`v0`-`v31` to the base scalar RISC-V ISA.
+ベクトル拡張は32のアーキテクチャベクトルレジスタ `v0`-`v31` を基本の整数RISC-V ISAに追加する．
 
-Each vector register has a fixed VLEN bits of state.
+各ベクトルレジスタは固定のVLEN[bit]を持つ．
 
 === Vector Context Status in `mstatus`
 
@@ -174,22 +171,16 @@ otherwise, `mstatus.SD` is set in accordance with existing specifications.
 For implementations with a writable `misa.V` field,
 the `vsstatus.VS` field may exist even if `misa.V` is clear.
 
-=== Vector type register, `vtype`
+=== ベクトルタイプレジスタ `vtype`
 
-The read-only XLEN-wide _vector_ _type_ CSR, `vtype` provides the
-default type used to interpret the contents of the vector register
-file, and can only be updated by `vset{i}vl{i}` instructions. The
-vector type determines the organization of elements in each
-vector register, and how multiple vector registers are grouped.  The
-`vtype` register also indicates how masked-off elements and elements
-past the current vector length in a vector result are handled.
+XLEN幅の読み込み専用 _vector_ _type_ CSRである `vtype` はベクトルレジスタの内容を解釈するデフォルトのタイプであり， `vset{i}vl{i}` 命令によってのみ上書き可能である．
+ベクトルタイプは各ベクトルレジスタの要素の構成，いくつのベクトルレジスタがグループ化されているかを決定する．
+`vtype` レジスタはマスクで無効化された要素や現在のベクトル長を超える要素がどのように扱われるかも示す．
 
 NOTE: Allowing updates only via the `vset{i}vl{i}` instructions
 simplifies maintenance of the `vtype` register state.
 
-The `vtype` register has five fields, `vill`, `vma`, `vta`,
-`vsew[2:0]`, and `vlmul[2:0]`.  Bits `vtype[XLEN-2:8]` should be
-written with zero, and non-zero values in this field are reserved.
+`vtype` レジスタは5つのフィールド `vill`, `vma`, `vta`, `vsew[2:0]`, `vlmul[2:0]` を持つ． `vtype[XLEN-2:8]` のビットは0でなければならず，このフィールドにおける非零の値は予約されている．
 
 include::vtype-format.adoc[]
 
